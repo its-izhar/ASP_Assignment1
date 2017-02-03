@@ -74,14 +74,20 @@ int isSameEvent(event_t *event1, event_t *event2)
   return isSame;
 }
 
-#if 0
+
 /* returns true if the srcEvent is earlier in time than destEvent */
 int isEarlierInTime(event_t *srcEvent, event_t *destEvent)
 {
   int srcEventHH=0, srcEventMM=0, destEventHH=0, destEventMM=0;
-  //bool isEarlierInTime = false;
+  bool isEarlierInTime = false;
   char *srcPtr=NULL, *destPtr=NULL;
 
+  if ((srcEvent == NULL) || (destEvent == NULL)){
+    dbg_info("Invalid Event Pointers!\n");
+    return isEarlierInTime;
+  }
+  // srcPtr and destPtr will have addressess of ':' characters from the date string
+  // after the first two calls to strtol
   srcEventHH = (int) strtol(srcEvent->time, &srcPtr, 10);
   destEventHH = (int) strtol(destEvent->time, &destPtr, 10);
   ++srcPtr;
@@ -94,6 +100,13 @@ int isEarlierInTime(event_t *srcEvent, event_t *destEvent)
   dbg_trace("srcEvent-HH:MM: %d:%d, destEvent-HH:MM: %d:%d\n",
                   srcEventHH, srcEventMM, destEventHH, destEventMM);
 
-  return true;
+  if(srcEventHH < destEventHH){
+    isEarlierInTime = true;
+  }
+  else if(srcEventHH == destEventHH) {
+    if(srcEventMM < destEventMM){
+      isEarlierInTime = true;
+    }
+  }
+  return isEarlierInTime;
 }
-#endif

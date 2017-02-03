@@ -58,3 +58,4 @@ int deleteNode(node_t **head, int position);
 void parseEvent(char *buffer, event_t *event);
 int isSameString(char *str1, char* str2, int size);
 int isSameEvent(event_t *event1, event_t *event2);
+int isEarlierInTime(event_t *srcEvent, event_t *destEvent);

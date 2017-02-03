@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <stdbool.h>
 #include "calenderFilter.h"
 
 
@@ -46,7 +47,7 @@ int main(int argc, char const *argv[])
     }
   }
 
-  // Checking the events logic here
+  // Checking the same events logic here
   int LLength = listLength(list);
   event_t iteratorEvent;
 
@@ -62,7 +63,40 @@ int main(int argc, char const *argv[])
       getNode(list, iterator, &iteratorEvent);
       if(position != iterator)
       {
-        if(1 == isSameEvent(&nEvent, &iteratorEvent))
+        if(true == isSameEvent(&nEvent, &iteratorEvent))
+        {
+          print_output("\t\t %d: %s,%s,%s,%s \n", iterator,
+            iteratorEvent.title, iteratorEvent.date, iteratorEvent.time, iteratorEvent.location);
+        }
+      }
+    }
+    print_output("%s","\n\n");
+  }
+
+  // Tests for checking if event1 is earlier than event2
+  getNode(list, 1, &nEvent);
+  getNode(list, 3, &iteratorEvent);
+
+  if(true == isEarlierInTime(&nEvent, &iteratorEvent))
+    dbg_trace("%s is earlier than %s\n", nEvent.time, iteratorEvent.time);
+  else
+    dbg_trace("%s is earlier than %s\n", iteratorEvent.time, nEvent.time);
+
+
+  // Checking for earlierInTime Events here
+  for(int position=1; position <= LLength; position++)
+  {
+    getNode(list, position, &nEvent);
+    print_output("Index: %d, Event: %s,%s,%s,%s\n",
+        position, nEvent.title, nEvent.date, nEvent.time, nEvent.location);
+    print_output("%s","\t Earlier in Time Events found at indexes: \n");
+
+    for(int iterator=1; iterator <= LLength; iterator++)
+    {
+      getNode(list, iterator, &iteratorEvent);
+      if(position != iterator)
+      {
+        if(true == isEarlierInTime(&iteratorEvent, &nEvent))
         {
           print_output("\t\t %d: %s,%s,%s,%s \n", iterator,
             iteratorEvent.title, iteratorEvent.date, iteratorEvent.time, iteratorEvent.location);
