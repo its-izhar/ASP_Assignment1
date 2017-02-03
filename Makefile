@@ -2,7 +2,7 @@
 # by Izhar Shaikh
 
 # Add the new TARGETS here
-TARGETS = stringPoolTestApp eventListTestApp
+TARGETS = stringPoolTestApp eventListTestApp stringProcessingTestApp
 CC = gcc
 HEADERS = -I.
 BIN_PATH = bin
@@ -21,6 +21,9 @@ stringPoolTestApp:
 
 eventListTestApp:
 	$(CC) $(CFLAGS) eventListTestApp.c eventList.c stringProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
+
+stringProcessingTestApp:
+	$(CC) $(CFLAGS) stringProcessingTestApp.c eventList.c stringProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
 
 clean:
 	rm -rf $(TARGETS) $(BIN_PATH) *.o

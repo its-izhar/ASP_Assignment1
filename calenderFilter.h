@@ -1,10 +1,11 @@
 #include "debugMacros.h"
 
-#define       MAX_POOL                    1
+#define       MODE_STRING_SIZE            1
 #define       TIME_STRING_SIZE            5
 #define       DATE_STRING_SIZE            10
 #define       LOCATION_STRING_SIZE        10
 #define       TITLE_STRING_SIZE           10
+#define       MODE_STRING_MAX_SIZE        MODE_STRING_SIZE+1
 #define       TIME_STRING_MAX_SIZE        TIME_STRING_SIZE+1  // 10 + 1 (for '\0')
 #define       DATE_STRING_MAX_SIZE        DATE_STRING_SIZE+1
 #define       LOCATION_STRING_MAX_SIZE    LOCATION_STRING_SIZE+1
@@ -50,7 +51,10 @@ int listLength(node_t *head);
 void displayList(node_t *head);
 void deleteList(node_t **head);
 int insertNode(node_t **head, int position, event_t *event);
+int getNode(node_t *head, int position, event_t *outEvent);
 int deleteNode(node_t **head, int position);
 
 /* Functions for string processing */
 void parseEvent(char *buffer, event_t *event);
+int isSameString(char *str1, char* str2, int size);
+int isSameEvent(event_t *event1, event_t *event2);
