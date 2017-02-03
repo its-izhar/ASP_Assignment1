@@ -1,8 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
 #include "calenderFilter.h"
-
-
 
 
 /* Creates string pool */
@@ -80,6 +80,7 @@ int resizeEventDatePool(stringPool_t **poolHandle)
 }
 
 
+
 /* Add new event date to the pool */
 int addEventDateToPool(stringPool_t **pool, char *newDateString)
 {
@@ -125,6 +126,43 @@ int addEventDateToPool(stringPool_t **pool, char *newDateString)
 }
 
 
+/* succeeds if the stringToFind is present in the pool; returns it's index via indexOut,
+   fails if the stringToFind is not present in the pool; returns -1 via indexOut */
+int getEventDateIndexFromPool(stringPool_t *pool, char *stringToFind, int *indexOut)
+{
+  int count=0;
+  stringPool_t *dPool = pool;
+
+  if((dPool == NULL) || (dPool->count <= 0) ||(dPool->eventDate == NULL)){
+    dbg_info("Empty Pool. Returning.\n");
+    *indexOut = -1;
+    return FAIL;
+  }
+  if(stringToFind == NULL){
+    dbg_info("Invalid stringToFind. Returning.\n");
+    *indexOut = -1;
+    return FAIL;
+  }
+
+  bool isPresent = FAIL;
+  for(count=0; count < dPool->count; count++)
+  {
+    //dbg_trace("being compared with: %s, stringToFind: %s\n",
+                    //dPool->eventDate[count], stringToFind);
+    if(!strcmp(dPool->eventDate[count], stringToFind)){
+      dbg_trace("Match found for %s at index %d\n", stringToFind, count);
+      *indexOut = count;
+      isPresent = SUCCESS;
+      break;
+    }
+  }
+  if(isPresent == FAIL){
+    *indexOut = -1;
+  }
+  return isPresent;
+}
+
+
 
 /* Prints the event date pool */
 void displayEventDatePool(stringPool_t *pool)
@@ -142,7 +180,6 @@ void displayEventDatePool(stringPool_t *pool)
     dbg_trace("Index: %d, String: %s\n", count, dPool->eventDate[count]);
   }
 }
-
 
 
 /* Destroys the event date pool */

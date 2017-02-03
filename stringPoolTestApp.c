@@ -31,9 +31,24 @@ int main(int argc, char *argv[])
 
   for(int i=0; i<MAX_STR; i++)
   {
-    snprintf(date, 10, "%s", dateString[i]);
+    snprintf(date, DATE_STRING_MAX_SIZE, "%s", dateString[i]);
     addEventDateToPool(&datePool, date);
     displayEventDatePool(datePool);
+  }
+
+  displayEventDatePool(datePool);
+
+  int getIndex = -1;
+  // See if the event date is present in the pool
+  for(int i=0; i<MAX_STR; i++)
+  {
+    int status = getEventDateIndexFromPool(datePool, (char*)dateString[MAX_STR-1-i], &getIndex);
+    if(status == FAIL || getIndex == -1){
+      dbg_trace("Failed to find %s in the pool!\n", dateString[MAX_STR-1-i]);
+    }
+    else{
+      dbg_trace("Found %s at %d in the pool!\n", dateString[MAX_STR-1-i], getIndex);
+    }
   }
 
   // Destroy the pool to free up the space

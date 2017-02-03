@@ -1,3 +1,6 @@
+#ifndef __DEBUG_MACROS__
+#define __DEBUG_MACROS__
+
 #include <stdio.h>
 
 #define DEBUG
@@ -29,3 +32,5 @@
   do { if(DEBUG_TEST) \
           fprintf(stdout, fmt, __VA_ARGS__); \
      } while(0)
+
+#endif
