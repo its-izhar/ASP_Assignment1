@@ -145,6 +145,30 @@ int deleteNode(node_t **head, int position)
 
 
 
+/* get the event data from the position (1 to listLength(list), inclusive) */
+int getNode(node_t *head, int position, event_t *outEvent)
+{
+  node_t *current = head;
+
+  if((position < 1) || (position > listLength(head))){
+    dbg_trace("Invalid position: %d, must be between 1 to %d (listLength)\n",
+                        position, listLength(head));
+    return FAIL;
+  }
+
+  while(--position){
+    current = current->next;
+  }
+  // Copy the event data into requested struct
+  if(current != NULL){
+    memset(outEvent, 0 , sizeof(event_t));
+    memcpy(outEvent, &current->event, sizeof(event_t));
+  }
+  return SUCCESS;
+}
+
+
+
 /* Deletes the entire linked list */
 void deleteList(node_t **head)
 {
