@@ -24,13 +24,6 @@ int isEarlierInTime(event_t *srcEvent, event_t *destEvent)
   srcEventMM = (int) strtol(srcPtr, NULL, 10);
   destEventMM = (int) strtol(destPtr, NULL, 10);
 
-#if 0
-  dbg_trace("srcEvent->time: %s, destEvent->time: %s\n",
-                  srcEvent->time, destEvent->time);
-  dbg_trace("srcEvent-HH:MM: %d:%d, destEvent-HH:MM: %d:%d\n",
-                  srcEventHH, srcEventMM, destEventHH, destEventMM);
-#endif
-
   if(srcEventHH < destEventHH){
     isEarlierInTime = true;
   }
@@ -53,4 +46,38 @@ int getEarliestEventOfTheDay(node_t *sortedEventList, event_t *OutEvent)
   // a perticular day will be at it's head position, i.e. position 1,
   // so we simply return that
   return getNode(sortedEventList, 1, OutEvent);
+}
+
+
+/* returns true if the requestedEvent is present in the given list */
+int isEventPresentInTheList(node_t *list, event_t *requestedEvent)
+{
+  bool isEventPresentInTheList = false;
+  int LLength = listLength(list);     // will iterate till this bound
+  event_t iteratorEvent;
+
+  if(list == NULL){
+    dbg_info("Event list is empty!\n");
+    return isEventPresentInTheList;
+  }
+
+  dbg_trace("Requested Event: %s,%s,%s,%s\n",
+      requestedEvent->title, requestedEvent->date,
+      requestedEvent->time, requestedEvent->location);
+  dbg_trace("%s","\t Duplicates found at indexes: \n");
+
+  for(int iterator=1; iterator <= LLength; iterator++)
+  {
+    getNode(list, iterator, &iteratorEvent);
+    if(true == isSameEvent(requestedEvent, &iteratorEvent))
+    {
+      dbg_trace("\t\t %d: %s,%s,%s,%s \n", iterator,
+        iteratorEvent.title, iteratorEvent.date,
+        iteratorEvent.time, iteratorEvent.location);
+      isEventPresentInTheList = true;
+      break;
+    }
+  }
+  dbg_trace("%s","\n\n");
+  return isEventPresentInTheList;
 }

@@ -62,19 +62,7 @@ int main(int argc, char const *argv[])
     print_output("Index: %d, Event: %s,%s,%s,%s\n",
         position, nEvent.title, nEvent.date, nEvent.time, nEvent.location);
     print_output("%s","\t Duplicates found at indexes: \n");
-
-    for(int iterator=1; iterator <= LLength; iterator++)
-    {
-      getNode(list, iterator, &iteratorEvent);
-      if(position != iterator)
-      {
-        if(true == isSameEvent(&nEvent, &iteratorEvent))
-        {
-          print_output("\t\t %d: %s,%s,%s,%s \n", iterator,
-            iteratorEvent.title, iteratorEvent.date, iteratorEvent.time, iteratorEvent.location);
-        }
-      }
-    }
+    isEventPresentInTheList(list, &nEvent);
     print_output("%s","\n\n");
   }
 

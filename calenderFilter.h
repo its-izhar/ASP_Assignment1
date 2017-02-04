@@ -66,5 +66,6 @@ int isSameEvent(event_t *event1, event_t *event2);
 /* Functions for event processing */
 int isEarlierInTime(event_t *srcEvent, event_t *destEvent);
 int getEarliestEventOfTheDay(node_t *sortedEventList, event_t *OutEvent);
+int isEventPresentInTheList(node_t *list, event_t *requestedEvent);
 
 #endif
