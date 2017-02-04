@@ -1,3 +1,6 @@
+#ifndef __CALENDER_FILTER__
+#define __CALENDER_FILTER__
+
 #include "debugMacros.h"
 
 #define       MODE_STRING_SIZE            1
@@ -50,6 +53,7 @@ int getEventDateIndexFromPool(stringPool_t *pool, char *stringToFind, int *index
 int listLength(node_t *head);
 void displayList(node_t *head);
 void deleteList(node_t **head);
+int sortedInsert(node_t **head, event_t *event);
 int insertNode(node_t **head, int position, event_t *event);
 int getNode(node_t *head, int position, event_t *outEvent);
 int deleteNode(node_t **head, int position);
@@ -58,4 +62,9 @@ int deleteNode(node_t **head, int position);
 void parseEvent(char *buffer, event_t *event);
 int isSameString(char *str1, char* str2, int size);
 int isSameEvent(event_t *event1, event_t *event2);
+
+/* Functions for event processing */
 int isEarlierInTime(event_t *srcEvent, event_t *destEvent);
+int getEarliestEventOfTheDay(node_t *sortedEventList, event_t *OutEvent);
+
+#endif

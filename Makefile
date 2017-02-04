@@ -20,10 +20,12 @@ stringPoolTestApp:
 	$(CC) $(CFLAGS) stringPoolTestApp.c stringPool.c $(HEADERS) -o $(BIN_PATH)/$@
 
 eventListTestApp:
-	$(CC) $(CFLAGS) eventListTestApp.c eventList.c stringProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
+	$(CC) $(CFLAGS) eventListTestApp.c eventList.c stringProcessing.c eventProcessing.c \
+	$(HEADERS) -o $(BIN_PATH)/$@
 
 stringProcessingTestApp:
-	$(CC) $(CFLAGS) stringProcessingTestApp.c eventList.c stringProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
+	$(CC) $(CFLAGS) stringProcessingTestApp.c eventList.c stringProcessing.c \
+	eventProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
 
 clean:
 	rm -rf $(TARGETS) $(BIN_PATH) *.o

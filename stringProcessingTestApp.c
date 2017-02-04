@@ -15,6 +15,7 @@ int main(int argc, char const *argv[])
   int totalStringsCount = 0;
   event_t nEvent;
   node_t *list = NULL;
+  node_t *sortedList = NULL;
 
   // Read a line from stdin and process it
   while(fgets(buffer, BUFFERSIZE , stdin) > 0)
@@ -29,11 +30,15 @@ int main(int argc, char const *argv[])
     // We assume that the given string is valid, so we parse
     parseEvent(buffer, &nEvent);
     insertNode(&list, totalStringsCount, &nEvent);
+    dbg_trace("Index: %d, Event: %s,%s,%s,%s\n",
+        sortedInsert(&sortedList, &nEvent), nEvent.title, nEvent.date, nEvent.time, nEvent.location);
     // Clear the buffer before reading next string
     memset(buffer, 0, BUFFERSIZE);
   }
   displayList(list);
   print_output("List length: %d, Expected: %d\n", listLength(list), totalStringsCount);
+  displayList(sortedList);
+  print_output("List length: %d, Expected: %d\n", listLength(sortedList), totalStringsCount);
 
   // Check the getNode logic
   for(int i=1; i<listLength(list); i++)
@@ -106,8 +111,14 @@ int main(int argc, char const *argv[])
     print_output("%s","\n\n");
   }
 
+  // get the earlist event of the day
+  getEarliestEventOfTheDay(sortedList, &nEvent);
+  print_output("Earliest Event: %s,%s,%s,%s\n",
+      nEvent.title, nEvent.date, nEvent.time, nEvent.location);
+
   // delete the list (to free the space allocated)
   deleteList(&list);
+  deleteList(&sortedList);
 
   return 0;
 }

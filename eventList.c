@@ -90,6 +90,40 @@ int insertNode(node_t **head, int position, event_t *event)
 }
 
 
+/* Insert events into the list in an sorted timed order for some date */
+int sortedInsert(node_t **head, event_t *event)
+{
+  int position = 1;
+  // Get the new node and store the data in it
+  node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
+  if(newNode == NULL){
+    dbg_info("Can't allocate memory for new node! Exiting!\n");
+    return FAIL;
+  }
+  memcpy(&newNode->event, event, sizeof(event_t));
+  newNode->next = NULL;
+
+  // Special case for the head end
+  if (*head == NULL || isEarlierInTime(&newNode->event, &(*head)->event)) {
+    newNode->next = *head;
+    *head = newNode;
+    return position;
+  }
+  else {
+    // Locate the node before the point of insertion
+    node_t *current = *head;
+    while (current->next != NULL && isEarlierInTime(&current->next->event, &newNode->event)) {
+      current = current->next;
+      position++;
+    }
+    newNode->next = current->next;
+    current->next = newNode;
+    position++;
+  }
+  return position;
+}
+
+
 
 /* deletes elements from the list */
 int deleteNode(node_t **head, int position)
