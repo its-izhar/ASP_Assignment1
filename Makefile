@@ -17,7 +17,8 @@ calenderFilter:
 	$(CC) $(CFLAGS) $@.c $(HEADERS) -o $(BIN_PATH)/$@
 
 stringPoolTestApp:
-	$(CC) $(CFLAGS) stringPoolTestApp.c stringPool.c $(HEADERS) -o $(BIN_PATH)/$@
+	$(CC) $(CFLAGS) stringPoolTestApp.c stringPool.c eventList.c eventProcessing.c \
+	stringProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
 
 eventListTestApp:
 	$(CC) $(CFLAGS) eventListTestApp.c eventList.c stringProcessing.c eventProcessing.c \

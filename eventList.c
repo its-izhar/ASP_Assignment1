@@ -26,16 +26,16 @@ void displayList(node_t *head)
 {
   node_t *current = head;
 
-  print_output("%s\n", "***List contents:");
+  print_output("\t%s\n", "***List contents:");
   while(current != NULL)
   {
-    print_output("Mode: %c, Title: %s, Date: %s, Time: %s, Location: %s\n",
+    print_output("\tMode: %c, Title: %s, Date: %s, Time: %s, Location: %s\n",
       current->event.mode, current->event.title, current->event.date,
       current->event.time, current->event.location);
 
     current = current->next;
   }
-  print_output("%s\n","***End!");
+  print_output("\t%s\n","***End!");
 }
 
 

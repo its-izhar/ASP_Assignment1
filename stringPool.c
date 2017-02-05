@@ -23,12 +23,24 @@ stringPool_t *createStringPool(int capacity)
   newPool->count = 0;
 
   // Assign memory to index pointer
-  // Note this will hold pointer to $capacity 'char*' pointers
-  newPool->eventDate = (char **) malloc(sizeof(char*) * capacity);
+  // NOTE:: this will hold pointer to $capacity 'char*' pointers
+  newPool->eventDate = (char **) calloc(capacity, sizeof(char*));
   if(newPool->eventDate == NULL)
   {
-    dbg_info("Can't create new index pointer in event date pool. Memory error!\n");
+    dbg_info("Can't create new eventDate index pointer in event date pool. Memory error!\n");
     return NULL;
+  }
+  // NOTE:: this will hold pointer to $capacity 'node_t*' pointers
+  newPool->eventList = (node_t **) calloc(capacity, sizeof(node_t*));
+  if(newPool->eventList == NULL)
+  {
+    dbg_info("Can't create new eventList index pointer in event date pool. Memory error!\n");
+    return NULL;
+  }
+  while(capacity > 0){
+    --capacity;
+    newPool->eventDate[capacity] = NULL;
+    newPool->eventList[capacity] = NULL;
   }
   return newPool;
 }
@@ -36,7 +48,7 @@ stringPool_t *createStringPool(int capacity)
 
 
 /* resize the current pool to have double the current size */
-int resizeEventDatePool(stringPool_t **poolHandle)
+static int resizeEventDatePool(stringPool_t **poolHandle)
 {
   stringPool_t *oldPoolHandle = *poolHandle;    // Keep the current handle for now
 
@@ -57,13 +69,20 @@ int resizeEventDatePool(stringPool_t **poolHandle)
         DATE_STRING_MAX_SIZE);
       dbg_trace("Copied %s from index %d into new pool!\n",
                       oldPoolHandle->eventDate[count], count);
+      // copy the eventList heads, into newPool
+      newPoolHandle->eventList[count] = oldPoolHandle->eventList[count];
+      dbg_trace("Copied List %p from index %d into new pool!\n",
+                      (void*)oldPoolHandle->eventList[count], count);
     }
     else {
       // free the previous ones, if there are any in case memory fails
       // while assigning the current one
         while(count > 0)
         {
-          free(newPoolHandle->eventDate[--count]);
+          --count;
+          free(newPoolHandle->eventDate[count]);
+          newPoolHandle->eventDate[count] = NULL;
+          newPoolHandle->eventList[count] = NULL;
         }
       return FAIL;
     }
@@ -71,6 +90,7 @@ int resizeEventDatePool(stringPool_t **poolHandle)
 
   // Once we know that we have successfully copied old pool into new one,
   // destroy the old pool
+  memset(oldPoolHandle, 0, sizeof(stringPool_t));
   destroyEventDatePool(oldPoolHandle);
 
   // Update the newPoolHandle in caller thread
@@ -111,6 +131,7 @@ int addEventDateToPool(stringPool_t **pool, char *newDateString)
     return FAIL;
   }
   dPool->eventDate[dPool->count] = ptr;     // Add the new string pointer to current index
+  dPool->eventList[dPool->count] = NULL;    // Add new list head pointer to current index
 
   // Copy the new string into the eventDate pool
   // NOTE:: Since we know that the date string will always be 10 charaters wide,
@@ -163,6 +184,14 @@ int getEventDateIndexFromPool(stringPool_t *pool, char *stringToFind, int *index
 }
 
 
+/* Helper for displaying events */
+static void displayEventsHelper(node_t *list)
+{
+  if(list == NULL){
+    return;
+  }
+  displayList(list);
+}
 
 /* Prints the event date pool */
 void displayEventDatePool(stringPool_t *pool)
@@ -177,7 +206,10 @@ void displayEventDatePool(stringPool_t *pool)
   dbg_trace("Pool Count: %d, Pool Capacity: %d\n", dPool->count, dPool->capacity);
 
   for(count = 0; count < dPool->count; count++){
-    dbg_trace("Index: %d, String: %s\n", count, dPool->eventDate[count]);
+    dbg_trace("Index: %d, String: %s, List Head:%p\n", count, dPool->eventDate[count],
+                                (void*)dPool->eventList[count]);
+    //displayEventsHelper(dPool->eventList[count]);
+    displayEventsHelper(NULL);
   }
 }
 
@@ -194,13 +226,21 @@ void destroyEventDatePool(stringPool_t *pool)
   }
   // Free the individual string pointers first
   while(pool->count){
-    free(pool->eventDate[--(pool->count)]);
+    --pool->count;
+    free(pool->eventDate[pool->count]);
     pool->eventDate[pool->count] = NULL;
+    deleteList(&pool->eventList[pool->count]);
+    pool->eventList[pool->count] = NULL;
   }
   // Free the string pool handle second
   if(NULL != pool->eventDate){
     free(pool->eventDate);
     pool->eventDate = NULL;
+  }
+  // Free the string pool handle second
+  if(NULL != pool->eventList){
+    free(pool->eventList);
+    pool->eventList = NULL;
   }
   // Free the event pool handle
   if(NULL != pool){

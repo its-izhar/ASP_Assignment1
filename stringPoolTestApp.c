@@ -17,7 +17,7 @@ const char *dateString[MAX_STR] = {
 
 int main(int argc, char *argv[])
 {
-  int poolCapacity = 2;
+  int poolCapacity = 5;
   char date[10];
 
   stringPool_t *datePool = createStringPool(poolCapacity);
@@ -26,6 +26,10 @@ int main(int argc, char *argv[])
     return 0;
   }
 
+  // Sample event
+  event_t newEvent = {'C', "Meeting   ", "NEB202    ", "01/20/2017", "03:45" };
+
+  int getIndex = -1;
   // Just to check
   displayEventDatePool(datePool);
 
@@ -33,12 +37,16 @@ int main(int argc, char *argv[])
   {
     snprintf(date, DATE_STRING_MAX_SIZE, "%s", dateString[i]);
     addEventDateToPool(&datePool, date);
+    int status = getEventDateIndexFromPool(datePool, date, &getIndex);
+    if(status == SUCCESS && getIndex != -1){
+      dbg_trace("Creating new list at index: %d for %s\n", getIndex, date);
+      sortedInsert(&datePool->eventList[getIndex], &newEvent);
+    }
     displayEventDatePool(datePool);
   }
 
   displayEventDatePool(datePool);
 
-  int getIndex = -1;
   // See if the event date is present in the pool
   for(int i=0; i<MAX_STR; i++)
   {

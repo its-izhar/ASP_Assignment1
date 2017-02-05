@@ -25,13 +25,6 @@ typedef struct eventFormat
   char time[TIME_STRING_MAX_SIZE];
 } event_t;
 
-// A struct to hold string pool of the event dateStr
-typedef struct eventDatePool
-{
-  char **eventDate;
-  int count;
-  int capacity;
-} stringPool_t;
 
 // Avents for a particular date
 typedef struct Node node_t;
@@ -41,11 +34,19 @@ struct Node {
   node_t *next;
 };
 
+// A struct to hold string pool of the event dateStr
+typedef struct eventDatePool
+{
+  char **eventDate;           // <<-- Event dates will be stored here
+  node_t **eventList;         // <<-- Event list for every eventDate will be here
+  int count;
+  int capacity;
+} stringPool_t;
+
 /* Functions for event date pool */
 stringPool_t *createStringPool(int capacity);
 int addEventDateToPool(stringPool_t **pool, char *newDateString);
 void displayEventDatePool(stringPool_t *pool);
-int resizeEventDatePool(stringPool_t **pool);
 void destroyEventDatePool(stringPool_t *pool);
 int getEventDateIndexFromPool(stringPool_t *pool, char *stringToFind, int *indexOut);
 
