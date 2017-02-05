@@ -17,7 +17,7 @@ const char *dateString[MAX_STR] = {
 
 int main(int argc, char *argv[])
 {
-  int poolCapacity = 15;
+  int poolCapacity = 30;
   char date[10];
 
   stringPool_t *datePool = createStringPool(poolCapacity);
