@@ -82,8 +82,8 @@ static int resizeEventDatePool(stringPool_t **poolHandle)
           --count;
           free(newPoolHandle->eventDate[count]);
           newPoolHandle->eventDate[count] = NULL;
-          newPoolHandle->eventList[count] = NULL;
         }
+        destroyEventDatePool(&newPoolHandle);
       return FAIL;
     }
   }
@@ -91,7 +91,7 @@ static int resizeEventDatePool(stringPool_t **poolHandle)
   // Once we know that we have successfully copied old pool into new one,
   // destroy the old pool
   memset(oldPoolHandle, 0, sizeof(stringPool_t));
-  destroyEventDatePool(oldPoolHandle);
+  destroyEventDatePool(&oldPoolHandle);
 
   // Update the newPoolHandle in caller thread
   *poolHandle = newPoolHandle;
@@ -215,8 +215,9 @@ void displayEventDatePool(stringPool_t *pool)
 
 
 /* Destroys the event date pool */
-void destroyEventDatePool(stringPool_t *pool)
+void destroyEventDatePool(stringPool_t **datePool)
 {
+  stringPool_t *pool = *datePool;
   int count = pool->count;
   int capacity = pool->capacity;
 
@@ -225,12 +226,12 @@ void destroyEventDatePool(stringPool_t *pool)
     return;
   }
   // Free the individual string pointers first
-  while(pool->count){
-    --pool->count;
-    free(pool->eventDate[pool->count]);
-    pool->eventDate[pool->count] = NULL;
-    deleteList(&pool->eventList[pool->count]);
-    pool->eventList[pool->count] = NULL;
+  while(pool->capacity){
+    --pool->capacity;
+    free(pool->eventDate[pool->capacity]);
+    pool->eventDate[pool->capacity] = NULL;
+    deleteList(&pool->eventList[pool->capacity]);
+    pool->eventList[pool->capacity] = NULL;
   }
   // Free the string pool handle second
   if(NULL != pool->eventDate){
@@ -247,6 +248,7 @@ void destroyEventDatePool(stringPool_t *pool)
     free(pool);
     pool = NULL;
   }
+  *datePool = NULL;
   dbg_trace("Destroyed event date pool with count %d and capacity %d\n",
                       count, capacity);
 }

@@ -6,7 +6,7 @@ TARGETS = stringPoolTestApp eventListTestApp stringProcessingTestApp
 CC = gcc
 HEADERS = -I.
 BIN_PATH = bin
-CFLAGS = -Wall -g -std=c99 -Werror
+CFLAGS = -Wall -g -std=c99 -Werror -O0
 
 all: clean create_bin $(TARGETS)
 

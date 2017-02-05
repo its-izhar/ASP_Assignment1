@@ -47,7 +47,7 @@ typedef struct eventDatePool
 stringPool_t *createStringPool(int capacity);
 int addEventDateToPool(stringPool_t **pool, char *newDateString);
 void displayEventDatePool(stringPool_t *pool);
-void destroyEventDatePool(stringPool_t *pool);
+void destroyEventDatePool(stringPool_t **pool);
 int getEventDateIndexFromPool(stringPool_t *pool, char *stringToFind, int *indexOut);
 
 /* Functions for managing each event list */

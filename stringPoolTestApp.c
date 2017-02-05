@@ -17,7 +17,7 @@ const char *dateString[MAX_STR] = {
 
 int main(int argc, char *argv[])
 {
-  int poolCapacity = 5;
+  int poolCapacity = 15;
   char date[10];
 
   stringPool_t *datePool = createStringPool(poolCapacity);
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
   }
 
   // Destroy the pool to free up the space
-  destroyEventDatePool(datePool);
+  destroyEventDatePool(&datePool);
 
   return 0;
 }
