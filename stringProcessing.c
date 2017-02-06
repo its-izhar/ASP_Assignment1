@@ -7,13 +7,13 @@
 // Parse the given the string from the buffer to event_t data struct
 void parseEvent(char *buffer, event_t *event)
 {
-  char eventString[50];
+  char eventString[BUFFERSIZE] = {0};
   const char delimiter[2] = ",";
   char *token;
   int pass = 0;
 
   // Make a copy of the original buffer as strtok will modify it otherwise
-  strcpy(eventString, buffer);
+  strncpy(eventString, buffer, BUFFERSIZE);
   memset(event, '\0', sizeof(event_t));
 
   /* get the first token (which is mode in our case) */
@@ -82,6 +82,9 @@ int updateEvent(event_t *destEvent, event_t *srcEvent)
     dbg_info("Invalid Event Pointers!\n");
     return FAIL;
   }
+  dbg_info("BEFORE:\n");
+  displayEvent(destEvent);
+
   // Reset the destEvent time and location fields
   memset(destEvent->time, '\0', TIME_STRING_MAX_SIZE);
   memset(destEvent->location, '\0', LOCATION_STRING_MAX_SIZE);
@@ -90,6 +93,9 @@ int updateEvent(event_t *destEvent, event_t *srcEvent)
   destEvent->time[TIME_STRING_SIZE] = '\0';
   strncpy(destEvent->location, srcEvent->location, LOCATION_STRING_SIZE);
   destEvent->location[LOCATION_STRING_SIZE] = '\0';
+
+  dbg_info("AFTER:\n");
+  displayEvent(destEvent);
 
   return SUCCESS;
 }

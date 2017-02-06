@@ -29,7 +29,7 @@ void displayList(node_t *head)
   //print_output("\t%s\n", "***List contents:");
   while(current != NULL)
   {
-    dbg_trace("\tMode: %c, Title: %s, Date: %s, Time: %s, Location: %s",
+    dbg_trace("\tMode: %c, Title: %s, Date: %s, Time: %s, Location: %s\n",
       current->event.mode, current->event.title, current->event.date,
       current->event.time, current->event.location);
 
@@ -127,6 +127,41 @@ int sortedInsert(node_t **head, event_t *event)
 }
 
 
+// Helper function for sortEventList(): adds events into the list in an sorted order
+static void sortEventListHelper(node_t **head, node_t *newNode)
+{
+  // Special case for the head end
+  if (*head == NULL || isEarlierInTime(&newNode->event, &(*head)->event)) {
+    newNode->next = *head;
+    *head = newNode;
+  }
+  else {
+    // Locate the node before the point of insertion
+    node_t *current = *head;
+    while (current->next != NULL && isEarlierInTime(&current->next->event, &newNode->event)) {
+      current = current->next;
+    }
+    newNode->next = current->next;
+    current->next = newNode;
+  }
+}
+
+// Given a list, change it to be in sorted order (using sortEventListHelper()).
+void sortEventList(node_t **head)
+{
+  node_t *result = NULL;         // build the answer here
+  node_t *current = *head;    // iterate over the original list
+  node_t *next;
+
+  while (current != NULL) {
+    next = current->next; // tricky - note the next pointer before we change it
+    sortEventListHelper(&result, current);
+    current = next;
+  }
+  // Update the list head in the caller
+  *head = result;
+}
+
 
 /* deletes elements from the list */
 int deleteNode(node_t **head, int position)
@@ -192,6 +227,10 @@ int getNode(node_t *head, int position, event_t *outEvent)
                         position, listLength(head));
     return FAIL;
   }
+  if(current == NULL){
+    dbg_info("Empty List!\n");
+    return FAIL;
+  }
 
   while(--position){
     current = current->next;
@@ -204,6 +243,28 @@ int getNode(node_t *head, int position, event_t *outEvent)
   return SUCCESS;
 }
 
+
+/* UPDATES only "time" and "location" fields of the node at position (range: 1 to listLength(list))  */
+int setNode(node_t *head, int position, event_t *srcEvent)
+{
+  node_t *current = head;
+
+  if((position < 1) || (position > listLength(head))){
+    dbg_trace("Invalid position: %d, must be between 1 to %d (listLength)\n",
+                        position, listLength(head));
+    return FAIL;
+  }
+  if(current == NULL){
+    dbg_info("Empty List!\n");
+    return FAIL;
+  }
+
+  while(--position){
+    current = current->next;
+  }
+  // Copy the event data into requested struct
+  return updateEvent(&current->event, srcEvent);
+}
 
 
 /* Deletes the entire linked list */

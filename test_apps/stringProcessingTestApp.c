@@ -63,7 +63,7 @@ int main(int argc, char const *argv[])
         position, nEvent.title, nEvent.date, nEvent.time, nEvent.location);
     print_output("%s","\t Duplicates found at indexes: \n");
     isEventPresentInTheList(list, &nEvent, NULL);
-    getEventWithMatchingTitleFromList(list, &nEvent, &index);
+    getEventIDWithMatchingTitleFromList(list, &nEvent, &index);
     dbg_trace("indexOut : %d\n", index);
     print_output("%s","\n\n");
   }

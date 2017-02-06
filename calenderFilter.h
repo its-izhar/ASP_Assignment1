@@ -66,6 +66,7 @@ void sortEventList(node_t **head);
 int sortedInsert(node_t **head, event_t *event);
 int insertNode(node_t **head, int position, event_t *event);
 int getNode(node_t *head, int position, event_t *outEvent);
+int setNode(node_t *head, int position, event_t *srcEvent);
 int deleteNode(node_t **head, int position);
 
 /* Functions for string processing */
@@ -79,6 +80,6 @@ void displayEvent(event_t *requestedEvent);
 int isEarlierInTime(event_t *srcEvent, event_t *destEvent);
 int getEarliestEventOfTheDay(node_t *sortedEventList, event_t *OutEvent);
 int isEventPresentInTheList(node_t *list, event_t *requestedEvent, int *indexOut);
-int getEventWithMatchingTitleFromList(node_t *list, event_t *requestedEvent, int *indexOut);
+int getEventIDWithMatchingTitleFromList(node_t *list, event_t *requestedEvent, int *indexOut);
 
 #endif

@@ -88,7 +88,7 @@ int isEventPresentInTheList(node_t *list, event_t *requestedEvent, int *indexOut
 
 /* returns true if the requestedEvent->title is present in the given list,
    with the index of that event in indexOut */
-int getEventWithMatchingTitleFromList(node_t *list, event_t *requestedEvent, int *indexOut)
+int getEventIDWithMatchingTitleFromList(node_t *list, event_t *requestedEvent, int *indexOut)
 {
   int iterator = 1;
   if(indexOut != NULL) {*indexOut = -1;}
