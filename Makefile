@@ -2,7 +2,8 @@
 # by Izhar Shaikh
 
 # Add the new TARGETS here
-TARGETS = calenderFilter stringPoolTestApp eventListTestApp stringProcessingTestApp
+TARGETS = calenderFilter stringPoolTestApp eventListTestApp stringProcessingTestApp \
+					stringProcessingTestApp2
 CC = gcc
 HEADERS = -I.
 BIN_PATH = bin
@@ -27,6 +28,10 @@ eventListTestApp:
 
 stringProcessingTestApp:
 	$(CC) $(CFLAGS) test_apps/stringProcessingTestApp.c eventList.c stringProcessing.c \
+	eventProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
+
+stringProcessingTestApp2:
+	$(CC) $(CFLAGS) test_apps/stringProcessingTestApp2.c eventList.c stringProcessing.c \
 	eventProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
 
 clean:

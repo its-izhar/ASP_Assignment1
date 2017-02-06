@@ -57,11 +57,14 @@ int main(int argc, char const *argv[])
 
   for(int position=1; position <= LLength; position++)
   {
+    int index = -1;
     getNode(list, position, &nEvent);
     print_output("Index: %d, Event: %s,%s,%s,%s\n",
         position, nEvent.title, nEvent.date, nEvent.time, nEvent.location);
     print_output("%s","\t Duplicates found at indexes: \n");
     isEventPresentInTheList(list, &nEvent, NULL);
+    getEventWithMatchingTitleFromList(list, &nEvent, &index);
+    dbg_trace("indexOut : %d\n", index);
     print_output("%s","\n\n");
   }
 

@@ -85,3 +85,48 @@ int isEventPresentInTheList(node_t *list, event_t *requestedEvent, int *indexOut
   }
   return isEventPresentInTheList;
 }
+
+
+/* returns true if the requestedEvent->title is present in the given list,
+   with the index of that event in indexOut */
+int getEventWithMatchingTitleFromList(node_t *list, event_t *requestedEvent, int *indexOut)
+{
+  int iterator = 1;
+  if(indexOut != NULL) {*indexOut = -1;}
+  bool isEventPresentInTheList = false;
+  int LLength = listLength(list);     // will iterate till this bound
+  event_t iteratorEvent;
+
+  if(list == NULL){
+    dbg_info("Event list is empty!\n");
+    return isEventPresentInTheList;
+  }
+
+  for(iterator=1; iterator <= LLength; iterator++)
+  {
+    getNode(list, iterator, &iteratorEvent);
+    if(true == isSameString(requestedEvent->title, iteratorEvent.title, TITLE_STRING_SIZE))
+    {
+      if(indexOut != NULL) {*indexOut = iterator;}
+      isEventPresentInTheList = true;
+      break;
+    }
+  }
+  if(isEventPresentInTheList == true){
+    dbg_trace("Requested Event Title: %s", requestedEvent->title);
+    dbg_trace("%s","\tDuplicates found at indexes: \n");
+    dbg_trace("\t\t %d: %s,%s,%s,%s", iterator,
+      iteratorEvent.title, iteratorEvent.date,
+      iteratorEvent.time, iteratorEvent.location);
+    dbg_trace("%s","\n");
+  }
+  return isEventPresentInTheList;
+}
+
+
+void displayEvent(event_t *requestedEvent)
+{
+  dbg_trace("Event: %s,%s,%s,%s\n",
+      requestedEvent->title, requestedEvent->date,
+      requestedEvent->time, requestedEvent->location);
+}

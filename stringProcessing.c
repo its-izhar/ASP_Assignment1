@@ -73,3 +73,23 @@ int isSameEvent(event_t *event1, event_t *event2)
 
   return isSame;
 }
+
+
+/* updates the destEvent with srcEvent  */
+int updateEvent(event_t *destEvent, event_t *srcEvent)
+{
+  if ((srcEvent == NULL) || (destEvent == NULL)){
+    dbg_info("Invalid Event Pointers!\n");
+    return FAIL;
+  }
+  // Reset the destEvent time and location fields
+  memset(destEvent->time, 0, TIME_STRING_MAX_SIZE);
+  memset(destEvent->location, 0, LOCATION_STRING_MAX_SIZE);
+
+  strncpy(destEvent->time, srcEvent->time, TIME_STRING_SIZE);
+  destEvent->time[TIME_STRING_SIZE] = '\0';
+  strncpy(destEvent->location, srcEvent->location, LOCATION_STRING_SIZE);
+  destEvent->location[LOCATION_STRING_SIZE] = '\0';
+
+  return SUCCESS;
+}

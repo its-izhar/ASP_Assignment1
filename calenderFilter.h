@@ -71,10 +71,13 @@ int deleteNode(node_t **head, int position);
 void parseEvent(char *buffer, event_t *event);
 int isSameString(char *str1, char* str2, int size);
 int isSameEvent(event_t *event1, event_t *event2);
+int updateEvent(event_t *destEvent, event_t *srcEvent);
 
 /* Functions for event processing */
+void displayEvent(event_t *requestedEvent);
 int isEarlierInTime(event_t *srcEvent, event_t *destEvent);
 int getEarliestEventOfTheDay(node_t *sortedEventList, event_t *OutEvent);
 int isEventPresentInTheList(node_t *list, event_t *requestedEvent, int *indexOut);
+int getEventWithMatchingTitleFromList(node_t *list, event_t *requestedEvent, int *indexOut);
 
 #endif
