@@ -26,16 +26,16 @@ void displayList(node_t *head)
 {
   node_t *current = head;
 
-  print_output("\t%s\n", "***List contents:");
+  //print_output("\t%s\n", "***List contents:");
   while(current != NULL)
   {
-    print_output("\tMode: %c, Title: %s, Date: %s, Time: %s, Location: %s\n",
+    dbg_trace("\tMode: %c, Title: %s, Date: %s, Time: %s, Location: %s",
       current->event.mode, current->event.title, current->event.date,
       current->event.time, current->event.location);
 
     current = current->next;
   }
-  print_output("\t%s\n","***End!");
+  //print_output("\t%s\n","***End!");
 }
 
 
@@ -93,7 +93,7 @@ int insertNode(node_t **head, int position, event_t *event)
 /* Insert events into the list in an sorted timed order for some date */
 int sortedInsert(node_t **head, event_t *event)
 {
-  int position = 1;
+  int position = -1;
   // Get the new node and store the data in it
   node_t *newNode = (node_t *) calloc(1, sizeof(node_t));
   if(newNode == NULL){
@@ -107,11 +107,13 @@ int sortedInsert(node_t **head, event_t *event)
   if (*head == NULL || isEarlierInTime(&newNode->event, &(*head)->event)) {
     newNode->next = *head;
     *head = newNode;
+    position = 1;
     return position;
   }
   else {
     // Locate the node before the point of insertion
     node_t *current = *head;
+    position = 1;
     while (current->next != NULL && isEarlierInTime(&current->next->event, &newNode->event)) {
       current = current->next;
       position++;

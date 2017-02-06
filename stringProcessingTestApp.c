@@ -6,7 +6,6 @@
 
 
 /* Buffersize to hold a line of the string */
-#define BUFFERSIZE 50
 char buffer[BUFFERSIZE] = {};
 
 

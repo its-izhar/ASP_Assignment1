@@ -52,6 +52,7 @@ int getEarliestEventOfTheDay(node_t *sortedEventList, event_t *OutEvent)
 /* returns true if the requestedEvent is present in the given list */
 int isEventPresentInTheList(node_t *list, event_t *requestedEvent)
 {
+  int iterator = 1;
   bool isEventPresentInTheList = false;
   int LLength = listLength(list);     // will iterate till this bound
   event_t iteratorEvent;
@@ -61,23 +62,24 @@ int isEventPresentInTheList(node_t *list, event_t *requestedEvent)
     return isEventPresentInTheList;
   }
 
-  dbg_trace("Requested Event: %s,%s,%s,%s\n",
-      requestedEvent->title, requestedEvent->date,
-      requestedEvent->time, requestedEvent->location);
-  dbg_trace("%s","\t Duplicates found at indexes: \n");
-
-  for(int iterator=1; iterator <= LLength; iterator++)
+  for(iterator=1; iterator <= LLength; iterator++)
   {
     getNode(list, iterator, &iteratorEvent);
     if(true == isSameEvent(requestedEvent, &iteratorEvent))
     {
-      dbg_trace("\t\t %d: %s,%s,%s,%s \n", iterator,
-        iteratorEvent.title, iteratorEvent.date,
-        iteratorEvent.time, iteratorEvent.location);
       isEventPresentInTheList = true;
       break;
     }
   }
-  dbg_trace("%s","\n\n");
+  if(isEventPresentInTheList == true){
+    dbg_trace("Requested Event: %s,%s,%s,%s",
+        requestedEvent->title, requestedEvent->date,
+        requestedEvent->time, requestedEvent->location);
+    dbg_trace("%s","\tDuplicates found at indexes: \n");
+    dbg_trace("\t\t %d: %s,%s,%s,%s", iterator,
+      iteratorEvent.title, iteratorEvent.date,
+      iteratorEvent.time, iteratorEvent.location);
+    dbg_trace("%s","\n");
+  }
   return isEventPresentInTheList;
 }

@@ -197,10 +197,11 @@ void displayEventDatePool(stringPool_t *pool)
   dbg_trace("Pool Count: %d, Pool Capacity: %d\n", dPool->count, dPool->capacity);
 
   for(count = 0; count < dPool->count; count++){
-    dbg_trace("Index: %d, String: %s, List Head:%p\n", count, dPool->eventDate[count],
-                                (void*)dPool->eventList[count]);
-    //displayEventsHelper(dPool->eventList[count]);
-    displayEventsHelper(NULL);
+    dbg_trace("Index: %d, String: %s, List Head:%p, Events: %d\n", count,
+      dPool->eventDate[count], (void*)dPool->eventList[count],
+      listLength(dPool->eventList[count]));
+    displayEventsHelper(dPool->eventList[count]);
+    //displayEventsHelper(NULL);
   }
 }
 

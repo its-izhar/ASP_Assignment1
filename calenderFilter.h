@@ -14,6 +14,14 @@
 #define       LOCATION_STRING_MAX_SIZE    LOCATION_STRING_SIZE+1
 #define       TITLE_STRING_MAX_SIZE       TITLE_STRING_SIZE+1
 
+/* Email Bufer size, Pool Size */
+#define       BUFFERSIZE                  45
+#define       POOL_CAPACITY               30
+
+/* Event Modes */
+#define       EVENT_CREATE                'C'
+#define       EVENT_DELETE                'D'
+#define       EVENT_MODIFY                'X'
 
 // Format of the email
 typedef struct eventFormat

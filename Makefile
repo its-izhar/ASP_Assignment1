@@ -2,7 +2,7 @@
 # by Izhar Shaikh
 
 # Add the new TARGETS here
-TARGETS = stringPoolTestApp eventListTestApp stringProcessingTestApp
+TARGETS = calenderFilter stringPoolTestApp eventListTestApp stringProcessingTestApp
 CC = gcc
 HEADERS = -I.
 BIN_PATH = bin
@@ -14,7 +14,8 @@ all: clean create_bin $(TARGETS)
 #	$(CC) $(CFLAGS) $@.c stringPool.c $(HEADERS) -o $(BIN_PATH)/$@
 
 calenderFilter:
-	$(CC) $(CFLAGS) $@.c $(HEADERS) -o $(BIN_PATH)/$@
+	$(CC) $(CFLAGS) stringPool.c eventList.c eventProcessing.c stringProcessing.c \
+	$@.c $(HEADERS) -o $(BIN_PATH)/$@
 
 stringPoolTestApp:
 	$(CC) $(CFLAGS) stringPoolTestApp.c stringPool.c eventList.c eventProcessing.c \
