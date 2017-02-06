@@ -118,6 +118,69 @@ RETURN:
 }
 
 
+/* Process the new event modify request */
+static void processEventModify(stringPool_t **pool, event_t *event)
+{
+  stringPool_t *poolHandle = *pool;
+  int dateIndex = -1;
+  int eventIndex = -1;
+  bool printToOut = false;
+  event_t earliestEvent, eventToModify, updatedEvent;
+
+  // Check if the date is present in the date pool, if not, return
+  bool status = getEventDateIndexFromPool(poolHandle, event->date, &dateIndex);
+  if((status == FAIL) || (dateIndex == -1))
+  {
+    dbg_trace("APP: %s is not present in the pool! Returning!\n", event->date);
+    goto RETURN;
+  }
+  dbg_trace("APP: List Head at : %p\n", poolHandle->eventList[dateIndex]);
+  //displayList(poolHandle->eventList[dateIndex]);
+  //dbg_trace("Found Index: %d\n", dateIndex);
+
+  // If we have the index, that means the date entry is present in the pool
+  if(dateIndex > -1)
+  {
+    bool isPresent = getEventIDWithMatchingTitleFromList(poolHandle->eventList[dateIndex],
+      event, &eventIndex);
+    dbg_trace("eventIndex: %d\n", eventIndex);
+    // If it is present in the list, we will modify it
+    if(isPresent == true)
+    {
+      dbg_trace("APP: Requested event to be modified is found at %d position in the list.\n", eventIndex);
+
+      // Before modifying, check if the event to be modified is the earliestEvent for the day
+      getEarliestEventOfTheDay(poolHandle->eventList[dateIndex], &earliestEvent);
+      getNode(poolHandle->eventList[dateIndex], eventIndex, &eventToModify);
+
+      if((true == isSameEvent(&eventToModify, &earliestEvent)) || (eventIndex == 1))
+      {
+        dbg_info("APP: Requested event to be modified is the earliest event!\n");
+        // Print to output (Set the flag)
+        printToOut = true;
+      }
+      // Modify the node with given event time and location
+      // Print to output if it's the earliest
+      setNode(poolHandle->eventList[dateIndex], eventIndex, event);
+      if(printToOut == true){
+        getNode(poolHandle->eventList[dateIndex], eventIndex, &updatedEvent);
+        print_output("%s:%s\n", updatedEvent.date, updatedEvent.location);
+      }
+      // Sort the event list here
+      sortEventList(&poolHandle->eventList[dateIndex]);
+    }
+    else {
+      // since it is not present, we just return
+      dbg_info("Requested event to be modified is not found! Returning!\n");
+    }
+  }
+
+RETURN:
+  // Update the poolHandle in the caller before going back
+  *pool = poolHandle;
+}
+
+
 
 /************************ Main() *******************************/
 int main(int argc, char const *argv[])
@@ -159,6 +222,7 @@ int main(int argc, char const *argv[])
         break;
 
       case EVENT_MODIFY:
+        processEventModify(&eventPool, &newEvent);
         break;
 
       default:
