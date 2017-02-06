@@ -61,7 +61,7 @@ int main(int argc, char const *argv[])
     print_output("Index: %d, Event: %s,%s,%s,%s\n",
         position, nEvent.title, nEvent.date, nEvent.time, nEvent.location);
     print_output("%s","\t Duplicates found at indexes: \n");
-    isEventPresentInTheList(list, &nEvent);
+    isEventPresentInTheList(list, &nEvent, NULL);
     print_output("%s","\n\n");
   }
 

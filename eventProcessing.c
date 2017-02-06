@@ -50,9 +50,10 @@ int getEarliestEventOfTheDay(node_t *sortedEventList, event_t *OutEvent)
 
 
 /* returns true if the requestedEvent is present in the given list */
-int isEventPresentInTheList(node_t *list, event_t *requestedEvent)
+int isEventPresentInTheList(node_t *list, event_t *requestedEvent, int *indexOut)
 {
   int iterator = 1;
+  if(indexOut != NULL) {*indexOut = -1;}
   bool isEventPresentInTheList = false;
   int LLength = listLength(list);     // will iterate till this bound
   event_t iteratorEvent;
@@ -67,6 +68,7 @@ int isEventPresentInTheList(node_t *list, event_t *requestedEvent)
     getNode(list, iterator, &iteratorEvent);
     if(true == isSameEvent(requestedEvent, &iteratorEvent))
     {
+      if(indexOut != NULL) {*indexOut = iterator;}
       isEventPresentInTheList = true;
       break;
     }

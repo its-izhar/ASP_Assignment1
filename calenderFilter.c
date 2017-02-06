@@ -29,15 +29,13 @@ static void processEventCreate(stringPool_t **pool, event_t *event)
                             event->date, poolHandle->count - 1);
     }
     dateIndex = poolHandle->count - 1;
-    // create a new list at the available index for this date entry
-    //int eventPositionInList = sortedInsert(&poolHandle->eventList[dateIndex], event);
   }
-  
+
   // Check if the new event is already present
   if(dateIndex > -1)
   {
     dbg_trace("APP: List Head at : %p\n", poolHandle->eventList[dateIndex]);
-    bool isPresent = isEventPresentInTheList(poolHandle->eventList[dateIndex], event);
+    bool isPresent = isEventPresentInTheList(poolHandle->eventList[dateIndex], event, NULL);
     // If it is already in the list, we know this one's a duplicate, so return
     if(isPresent == true){
       dbg_info("APP: New event is already present in the list. returning.\n");
@@ -69,6 +67,58 @@ RETURN:
 }
 
 
+/* Process the new event delete request */
+static void processEventDelete(stringPool_t **pool, event_t *event)
+{
+  stringPool_t *poolHandle = *pool;
+  int dateIndex = -1;
+  int eventIndex = -1;
+  event_t earliestEvent;
+
+  // Check if the date is present in the date pool, if not, return
+  bool status = getEventDateIndexFromPool(poolHandle, event->date, &dateIndex);
+  if((status == FAIL) || (dateIndex == -1))
+  {
+    dbg_trace("APP: %s is not present in the pool! Returning!\n", event->date);
+    goto RETURN;
+  }
+  dbg_trace("APP: List Head at : %p\n", poolHandle->eventList[dateIndex]);
+  displayList(poolHandle->eventList[dateIndex]);
+  //dbg_trace("Found Index: %d\n", dateIndex);
+
+  // If we have the index, that means the date entry is present in the pool
+  if(dateIndex > -1)
+  {
+    bool isPresent = isEventPresentInTheList(poolHandle->eventList[dateIndex], event, &eventIndex);
+    dbg_trace("eventIndex: %d\n", eventIndex);
+    // If it is present in the list, we will delete it
+    if(isPresent == true)
+    {
+      dbg_trace("APP: Requested event to be deleted is found at %d position in the list.\n", eventIndex);
+      // Before deleting, check if the event to be deleted is the earliestEvent for the day
+      getEarliestEventOfTheDay(poolHandle->eventList[dateIndex], &earliestEvent);
+      if(true == isSameEvent(event, &earliestEvent))
+      {
+        dbg_info("APP: Requested event to be deleted is the earliest event!\n");
+        // Print to output (Location: None)
+        print_output("%s:%s\n", event->date, "None");
+      }
+      // Delete the node from the list
+      deleteNode(&poolHandle->eventList[dateIndex], eventIndex);
+    }
+    else {
+      // since it is not present, we just return
+      dbg_info("Requested event to be deleted is not found! Returning!\n");
+    }
+  }
+
+RETURN:
+  // Update the poolHandle in the caller before going back
+  *pool = poolHandle;
+}
+
+
+
 /************************ Main() *******************************/
 int main(int argc, char const *argv[])
 {
@@ -98,6 +148,7 @@ int main(int argc, char const *argv[])
         break;
 
       case EVENT_DELETE:
+        processEventDelete(&eventPool, &newEvent);
         break;
 
       case EVENT_MODIFY:
@@ -108,6 +159,7 @@ int main(int argc, char const *argv[])
     }
 
     // Clear the buffer before reading next string
+    memset(&newEvent, 0, sizeof(event_t));
     memset(buffer, 0, BUFFERSIZE);
     dbg_info("\n");
   }
