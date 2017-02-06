@@ -14,7 +14,7 @@ void parseEvent(char *buffer, event_t *event)
 
   // Make a copy of the original buffer as strtok will modify it otherwise
   strcpy(eventString, buffer);
-  memset(event, 0, sizeof(event_t));
+  memset(event, '\0', sizeof(event_t));
 
   /* get the first token (which is mode in our case) */
   token = strtok(eventString, delimiter);
@@ -83,8 +83,8 @@ int updateEvent(event_t *destEvent, event_t *srcEvent)
     return FAIL;
   }
   // Reset the destEvent time and location fields
-  memset(destEvent->time, 0, TIME_STRING_MAX_SIZE);
-  memset(destEvent->location, 0, LOCATION_STRING_MAX_SIZE);
+  memset(destEvent->time, '\0', TIME_STRING_MAX_SIZE);
+  memset(destEvent->location, '\0', LOCATION_STRING_MAX_SIZE);
 
   strncpy(destEvent->time, srcEvent->time, TIME_STRING_SIZE);
   destEvent->time[TIME_STRING_SIZE] = '\0';

@@ -74,14 +74,13 @@ int isEventPresentInTheList(node_t *list, event_t *requestedEvent, int *indexOut
     }
   }
   if(isEventPresentInTheList == true){
-    dbg_trace("Requested Event: %s,%s,%s,%s",
+    dbg_trace("Requested Event: %s,%s,%s,%s\n",
         requestedEvent->title, requestedEvent->date,
         requestedEvent->time, requestedEvent->location);
     dbg_trace("%s","\tDuplicates found at indexes: \n");
-    dbg_trace("\t\t %d: %s,%s,%s,%s", iterator,
+    dbg_trace("\t\t %d: %s,%s,%s,%s\n", iterator,
       iteratorEvent.title, iteratorEvent.date,
       iteratorEvent.time, iteratorEvent.location);
-    dbg_trace("%s","\n");
   }
   return isEventPresentInTheList;
 }
@@ -113,12 +112,11 @@ int getEventWithMatchingTitleFromList(node_t *list, event_t *requestedEvent, int
     }
   }
   if(isEventPresentInTheList == true){
-    dbg_trace("Requested Event Title: %s", requestedEvent->title);
+    dbg_trace("Requested Event Title: %s\n", requestedEvent->title);
     dbg_trace("%s","\tDuplicates found at indexes: \n");
-    dbg_trace("\t\t %d: %s,%s,%s,%s", iterator,
+    dbg_trace("\t\t %d: %s,%s,%s,%s\n", iterator,
       iteratorEvent.title, iteratorEvent.date,
       iteratorEvent.time, iteratorEvent.location);
-    dbg_trace("%s","\n");
   }
   return isEventPresentInTheList;
 }

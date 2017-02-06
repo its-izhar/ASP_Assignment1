@@ -62,6 +62,7 @@ int getEventDateIndexFromPool(stringPool_t *pool, char *stringToFind, int *index
 int listLength(node_t *head);
 void displayList(node_t *head);
 void deleteList(node_t **head);
+void sortEventList(node_t **head);
 int sortedInsert(node_t **head, event_t *event);
 int insertNode(node_t **head, int position, event_t *event);
 int getNode(node_t *head, int position, event_t *outEvent);

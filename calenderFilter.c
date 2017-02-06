@@ -59,7 +59,7 @@ static void processEventCreate(stringPool_t **pool, event_t *event)
   }
 
 PRINT_OUTPUT:
-  print_output("%s:%s", event->date, event->location);
+  print_output("%s:%s\n", event->date, event->location);
 
 RETURN:
   // Update the poolHandle in the caller before going back
@@ -135,8 +135,15 @@ int main(int argc, char const *argv[])
   while(fgets(buffer, BUFFERSIZE , stdin) > 0)
   {
     buffer[BUFFERSIZE-1] = '\0';          // Force the end of the string
+
+    // Pad the unnecessary buffer with null-termination
+    int bufferIndex = BUFFERSIZE - 1;
+    while(!isalnum(buffer[bufferIndex])){
+      buffer[bufferIndex] = '\0';
+      --bufferIndex;
+    }
     ++totalStringsCount;
-    dbg_trace("APP: String [size: %d]: %s", (int) strlen(buffer), buffer);
+    dbg_trace("APP: String [size: %d]: %s\n", (int) strlen(buffer), buffer);
     // We assume that the given string is valid, so we parse
     parseEvent(buffer, &newEvent);
 
