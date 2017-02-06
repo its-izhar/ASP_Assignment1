@@ -18,15 +18,15 @@ calenderFilter:
 	$@.c $(HEADERS) -o $(BIN_PATH)/$@
 
 stringPoolTestApp:
-	$(CC) $(CFLAGS) stringPoolTestApp.c stringPool.c eventList.c eventProcessing.c \
-	stringProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
+	$(CC) $(CFLAGS) test_apps/stringPoolTestApp.c stringPool.c eventList.c \
+	eventProcessing.c stringProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
 
 eventListTestApp:
-	$(CC) $(CFLAGS) eventListTestApp.c eventList.c stringProcessing.c eventProcessing.c \
-	$(HEADERS) -o $(BIN_PATH)/$@
+	$(CC) $(CFLAGS) test_apps/eventListTestApp.c eventList.c stringProcessing.c \
+	eventProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
 
 stringProcessingTestApp:
-	$(CC) $(CFLAGS) stringProcessingTestApp.c eventList.c stringProcessing.c \
+	$(CC) $(CFLAGS) test_apps/stringProcessingTestApp.c eventList.c stringProcessing.c \
 	eventProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
 
 clean:

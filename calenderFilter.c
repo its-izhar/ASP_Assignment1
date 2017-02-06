@@ -32,11 +32,11 @@ static void processEventCreate(stringPool_t **pool, event_t *event)
     // create a new list at the available index for this date entry
     //int eventPositionInList = sortedInsert(&poolHandle->eventList[dateIndex], event);
   }
-  dbg_trace("APP: List Head at : %p\n", poolHandle->eventList[dateIndex]);
-
+  
   // Check if the new event is already present
   if(dateIndex > -1)
   {
+    dbg_trace("APP: List Head at : %p\n", poolHandle->eventList[dateIndex]);
     bool isPresent = isEventPresentInTheList(poolHandle->eventList[dateIndex], event);
     // If it is already in the list, we know this one's a duplicate, so return
     if(isPresent == true){
