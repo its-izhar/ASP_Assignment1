@@ -6,7 +6,7 @@ TARGETS = calenderFilter stringPoolTestApp eventListTestApp stringProcessingTest
 CC = gcc
 HEADERS = -I.
 BIN_PATH = bin
-CFLAGS = -Wall -g -std=c99 -Werror -O0
+CFLAGS = -Wall -std=c99 -Werror -g -O0
 
 all: clean create_bin $(TARGETS)
 

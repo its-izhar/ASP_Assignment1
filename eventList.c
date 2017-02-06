@@ -48,6 +48,7 @@ int insertNode(node_t **head, int position, event_t *event)
 
   // get the current head of the list
   positionNode = *head;
+  previousNode = *head;
 
   // Error checking
   if(position < 1){
