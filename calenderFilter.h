@@ -8,6 +8,8 @@
 #define       DATE_STRING_SIZE            10
 #define       LOCATION_STRING_SIZE        10
 #define       TITLE_STRING_SIZE           10
+#define       SUBJECT_WORD_SKIP_SIZE      9
+#define       MAX_STRING_SUBJECT_SIZE     40
 #define       MODE_STRING_MAX_SIZE        MODE_STRING_SIZE+1
 #define       TIME_STRING_MAX_SIZE        TIME_STRING_SIZE+1  // 10 + 1 (for '\0')
 #define       DATE_STRING_MAX_SIZE        DATE_STRING_SIZE+1
@@ -17,6 +19,7 @@
 /* Email Bufer size, Pool Size */
 #define       BUFFERSIZE                  45
 #define       POOL_CAPACITY               30
+#define       MIN_BOUND                   35
 
 /* Event Modes */
 #define       EVENT_CREATE                'C'

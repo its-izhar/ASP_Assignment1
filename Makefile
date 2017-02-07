@@ -3,16 +3,20 @@
 
 # Add the new TARGETS here
 TARGETS = calenderFilter stringPoolTestApp eventListTestApp stringProcessingTestApp \
-					stringProcessingTestApp2 eventListTestApp2
+					stringProcessingTestApp2 eventListTestApp2 emailFilter
 CC = gcc
 HEADERS = -I.
 BIN_PATH = bin
-CFLAGS = -Wall -std=c99 -Werror -g -O0
+CFLAGS = -Wall -std=c99 -g -O0 -Werror
 
 all: clean create_bin $(TARGETS)
 
 #$(TARGETS):
 #	$(CC) $(CFLAGS) $@.c stringPool.c $(HEADERS) -o $(BIN_PATH)/$@
+
+emailFilter:
+	$(CC) $(CFLAGS) emailFilter.c stringPool.c eventList.c eventProcessing.c \
+	stringProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
 
 calenderFilter:
 	$(CC) $(CFLAGS) stringPool.c eventList.c eventProcessing.c stringProcessing.c \
