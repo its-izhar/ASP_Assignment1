@@ -1,18 +1,30 @@
+# @Author: Izhar Shaikh <izhar>
+# @Date:   2017-02-22T17:44:29-05:00
+# @Email:  izharits@gmail.com
+# @Filename: Makefile
+# @Last modified by:   izhar
+# @Last modified time: 2017-03-06T17:06:42-05:00
+# @License: MIT
+
+
+
 # Makefile to build the assignment 1
 # by Izhar Shaikh
 
 # Add the new TARGETS here
 TARGETS = calenderFilter stringPoolTestApp eventListTestApp stringProcessingTestApp \
-					stringProcessingTestApp2 eventListTestApp2 emailFilter
+					stringProcessingTestApp2 eventListTestApp2 emailFilter calenderUpdater
 CC = gcc
 HEADERS = -I.
 BIN_PATH = bin
-CFLAGS = -Wall -Werror -std=c99 -g -O0 -DDEBUG
+CFLAGS = -Wall -Werror -std=c99 -O2 #-g -DDEBUG
 
 all: clean create_bin $(TARGETS)
 
 #$(TARGETS):
 #	$(CC) $(CFLAGS) $@.c stringPool.c $(HEADERS) -o $(BIN_PATH)/$@
+calenderUpdater:
+	$(CC) $(CFLAGS) calenderUpdater.c $(HEADERS) -o $(BIN_PATH)/$@
 
 emailFilter:
 	$(CC) $(CFLAGS) emailFilter.c stringPool.c eventList.c eventProcessing.c \
@@ -43,7 +55,7 @@ stringProcessingTestApp2:
 	eventProcessing.c $(HEADERS) -o $(BIN_PATH)/$@
 
 clean:
-	rm -rf $(TARGETS) $(BIN_PATH) *.o
+	rm -rf $(TARGETS) $(BIN_PATH) *.o *.gch
 
 create_bin:
 	mkdir $(BIN_PATH)
